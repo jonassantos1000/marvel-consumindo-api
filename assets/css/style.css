@@ -1,0 +1,20 @@
+.cor-darkred-marvel{
+    background-color: darkred;
+}
+
+.cor-white{
+    color: white;
+}
+
+.cor-darkgrey{
+    background-color: rgb(51, 65, 65);
+}
+
+.cor-vermelho-secundario{
+    background-color: #B22222;
+}
+
+.imagens{
+    width: 100%!important;
+    height: 350px!important;
+}
