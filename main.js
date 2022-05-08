@@ -1,6 +1,6 @@
 function getParams(){
     var apiKey = "4c4d26171d572e84bc95df028d383749";
-    var privateKey = ;
+    var privateKey = "bbcc858dda000b330752f9e1cccbff844094a2ff";
     var ts= Math.floor(new Date()/1000);
     var hash= md5(`${ts}${privateKey}${apiKey}`);
 
@@ -13,11 +13,12 @@ function getParams(){
 
 function getApi(params, id=null){
     var xhr = new XMLHttpRequest();
-    var url = `https://gateway.marvel.com:443/v1/public/characters${id==null ? '?nameStartsWith=SPIDER-MAN&limit=12&' : `/${id}?`}ts=${params.ts}&apikey=${params.apiKey}&hash=${params.hash}`;
+    var url = `https://gateway.marvel.com:443/v1/public/characters${id==null ? getInputFilter () : `/${id}?`}ts=${params.ts}&apikey=${params.apiKey}&hash=${params.hash}`;
     console.log(url);
     xhr.onreadystatechange = function() { 
         if (this.readyState == 4 && this.status == 200) {
             let response = JSON.parse(xhr.responseText);
+            
             if(!id){
                 createCard(response.data.results);
             }else{
@@ -30,17 +31,19 @@ function getApi(params, id=null){
 }
 
 function createCard(result){
+    const divPrincipal = document.querySelector("#div-principal");
+    divPrincipal.innerHTML="";
     result.forEach(element => {
-        const divPrincipal = document.querySelector("#div-principal");
+
         
         const divContent = document.createElement("div");
         const img = document.createElement("img");
         const nomePersonagem = document.createElement("h2");
         const link = document.createElement('a');
 
-        divContent.classList.add("d-flex", "flex-column","w-25")
+        divContent.classList.add("d-flex", "flex-column","w-25", "conteudo", "float-sm-right", "flex-wrap")
         divPrincipal.classList.add("d-flex", "flex-row","justify-content-center")
-        img.classList.add("img-fluir","mt-2", "imagens", "rounded")
+        img.classList.add("mt-2", "imagens", "borda")
         let id = element.resourceURI.split("/"); id=id[id.length-1]; img.id = id;
         nomePersonagem.classList.add("fs-6","text-center")
         
@@ -163,4 +166,27 @@ function start(){
     }
 }
 
-start();
+function getInputFilter () {
+    var pesquisa = document.querySelector("#barra")
+    var text = pesquisa.value
+    if (text==""){
+        text= "?limit=52&"
+    }else{
+        text = `?nameStartsWith=${text}&limit=52&`;
+    }
+    return text;
+}
+
+ start();
+
+var botao = document.querySelector("#botao");
+botao.addEventListener("click", function(){
+    start();
+ });
+
+document.addEventListener('keydown', function(e) {
+    if(e.code == "Enter"){
+        e.preventDefault();
+        start();
+    }
+});

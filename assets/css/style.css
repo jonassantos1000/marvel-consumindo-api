@@ -16,5 +16,18 @@
 
 .imagens{
     width: 100%!important;
-    height: 350px!important;
+    height: 300px!important;
+}
+
+.borda{
+    border-radius: 40px 0 40px 0;
+}
+
+.imagens:hover{
+    padding: 10px;
+}
+
+.botao{
+    background-color: #008321;
+    color: white;
 }
