@@ -41,7 +41,7 @@ function createCard(result){
         const nomePersonagem = document.createElement("h2");
         const link = document.createElement('a');
 
-        divContent.classList.add("d-flex", "flex-column","w-25", "conteudo", "float-sm-right", "flex-wrap")
+        divContent.classList.add("d-flex", "flex-column","col-10", "col-md-4", "col-lg-3", "conteudo", "float-sm-right", "flex-wrap")
         divPrincipal.classList.add("d-flex", "flex-row","justify-content-center")
         img.classList.add("mt-2", "imagens", "borda")
         let id = element.resourceURI.split("/"); id=id[id.length-1]; img.id = id;
@@ -80,7 +80,7 @@ function createCharacter(result){
         const thTipo = document.createElement("th");
       
         descricao.classList.add("text-justify")
-        divConteudo.classList.add("col-8","mt-4","fs-5");
+        divConteudo.classList.add("col-12", "col-sm-8","mt-4","fs-5");
         img.classList.add("img-fluid", "w-100");
         divTabelaHistoria.classList.add("text-center","mt-3");
         tbody.classList.add("tbody-historia")
@@ -136,7 +136,7 @@ function createCharacter(result){
         const tituloLista = document.createElement("h4");
         const lista = document.createElement("ul");
 
-        divLista.classList.add("col-4", "cor-vermelho-secundario", "cor-white");
+        divLista.classList.add("col-12", "col-sm-4", "cor-vermelho-secundario", "cor-white");
         tituloLista.classList.add("fs-5", "p-2", "pt-4");
 
         tamList= element.comics.items.length - 1;
@@ -185,7 +185,7 @@ botao.addEventListener("click", function(){
  });
 
 document.addEventListener('keydown', function(e) {
-    if(e.code == "Enter"){
+    if(e.key == "Enter"){
         e.preventDefault();
         start();
     }
