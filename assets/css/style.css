@@ -16,7 +16,7 @@
 
 .imagens{
     width: 100%!important;
-    height: 300px!important;
+    height: 250px!important;
 }
 
 .borda{
@@ -24,7 +24,8 @@
 }
 
 .imagens:hover{
-    padding: 10px;
+    padding: 2px;
+    border: 2px solid black;
 }
 
 .botao{

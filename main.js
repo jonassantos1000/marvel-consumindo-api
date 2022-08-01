@@ -1,8 +1,8 @@
 function getParams(){
-    var apiKey = "4c4d26171d572e84bc95df028d383749";
-    var privateKey = "bbcc858dda000b330752f9e1cccbff844094a2ff";
-    var ts= Math.floor(new Date()/1000);
-    var hash= md5(`${ts}${privateKey}${apiKey}`);
+    let apiKey = "4c4d26171d572e84bc95df028d383749";
+    let privateKey = "bbcc858dda000b330752f9e1cccbff844094a2ff";
+    let ts= Math.floor(new Date()/1000);
+    let hash= md5(`${ts}${privateKey}${apiKey}`);
 
     return {
         ts, 
@@ -12,9 +12,9 @@ function getParams(){
 }
 
 function getApi(params, id=null){
-    var xhr = new XMLHttpRequest();
-    var url = `https://gateway.marvel.com:443/v1/public/characters${id==null ? getInputFilter () : `/${id}?`}ts=${params.ts}&apikey=${params.apiKey}&hash=${params.hash}`;
-    console.log(url);
+    let xhr = new XMLHttpRequest();
+    let url = `https://gateway.marvel.com:443/v1/public/characters${id==null ? getInputFilter () : `/${id}?`}ts=${params.ts}&apikey=${params.apiKey}&hash=${params.hash}`;
+    
     xhr.onreadystatechange = function() { 
         if (this.readyState == 4 && this.status == 200) {
             let response = JSON.parse(xhr.responseText);
@@ -31,38 +31,22 @@ function getApi(params, id=null){
 }
 
 function createCard(result){
-    const divPrincipal = document.querySelector("#div-principal");
-    divPrincipal.innerHTML="";
-    result.forEach(element => {
-
-        
-        const divContent = document.createElement("div");
-        const img = document.createElement("img");
-        const nomePersonagem = document.createElement("h2");
-        const link = document.createElement('a');
-
-        divContent.classList.add("d-flex", "flex-column","col-10", "col-md-4", "col-lg-3", "conteudo", "float-sm-right", "flex-wrap")
-        divPrincipal.classList.add("d-flex", "flex-row","justify-content-center")
-        img.classList.add("mt-2", "imagens", "borda")
-        let id = element.resourceURI.split("/"); id=id[id.length-1]; img.id = id;
-        nomePersonagem.classList.add("fs-6","text-center")
-        
-        link.href= `./characters.html?${element.id}`;
-        img.src = `${element.thumbnail.path}.${element.thumbnail.extension}`;
-        nomePersonagem.innerHTML = element.name;
-
-        link.append(img);
-        divContent.append(link);
-        divContent.append(nomePersonagem);
-        divPrincipal.append(divContent);
-    })
+    cardsEmHtml = result.map(element =>  `
+    <div class="d-flex flex-column col-10 col-md-4 col-lg-3 conteudo float-sm-right flex-wrap" id="card">
+        <a href="./characters.html?${element.id}"><img src="${element.thumbnail.path}.${element.thumbnail.extension}" class="mt-2 imagens borda"></a>
+        <h2 class="fs-6 text-center">${element.name}</h2>
+    </div>
+    `);
+    let htmlConcatenado = cardsEmHtml.join('');
+    document.querySelector("#div-principal").innerHTML  = htmlConcatenado;
 }
 
 function createCharacter(result){
-    console.log(result);
-    result.forEach(element => {
+
+        element = result[0]
 
         const divPrincipal = document.querySelector("#div-principal");
+        divPrincipal.innerHTML=""
 
         //div conteudo
         const divConteudo = document.createElement("div");
@@ -113,7 +97,7 @@ function createCharacter(result){
             const tdTitulo = document.createElement("td");
             const tdTipo = document.createElement("td");
     
-            var id = element.stories.items[i].resourceURI.split("/"); id=id[id.length-1];
+            let id = element.stories.items[i].resourceURI.split("/"); id=id[id.length-1];
             tdID.innerHTML = id;
             tdTitulo.innerHTML = element.stories.items[i].name;
             tdTipo.innerHTML = element.stories.items[i].type;
@@ -151,13 +135,11 @@ function createCharacter(result){
         divLista.append(tituloLista);
         divLista.append(lista);
         divPrincipal.append(divLista);
-
-    });
 }
 
 function start(){
     const params =  getParams();
-    var idPersonagem = window.location.href.split("?")[1]
+    let idPersonagem = window.location.href.split("?")[1]
     if(idPersonagem != null){
         getApi(params,idPersonagem);
     }
@@ -167,19 +149,19 @@ function start(){
 }
 
 function getInputFilter () {
-    var pesquisa = document.querySelector("#barra")
-    var text = pesquisa.value
+    let pesquisa = document.querySelector("#barra")
+    let text = pesquisa.value
     if (text==""){
-        text= "?limit=52&"
+        text= "?limit=12&"
     }else{
         text = `?nameStartsWith=${text}&limit=52&`;
     }
     return text;
 }
 
- start();
+start()
 
-var botao = document.querySelector("#botao");
+let botao = document.querySelector("#botao");
 botao.addEventListener("click", function(){
     start();
  });
